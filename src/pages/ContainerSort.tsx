@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RiEdit2Fill } from 'react-icons/ri';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from 'react-bootstrap/Form';
 
 
 
@@ -112,8 +113,7 @@ function ContainerSort() {
                     onDragOver={(e) => e.preventDefault()}
                   >
                     {editTodoId === todo.id ? (
-                      <input
-                        type="text"
+                      <Form.Control id="editInput" type="text" placeholder="Small text"                        
                         value={todo.title}
                         onChange={(e) =>
                           handleEditTodo(todo.id, e.target.value)

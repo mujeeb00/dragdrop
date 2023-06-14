@@ -43,6 +43,10 @@ body{
   width: 100%;
   padding:40px;
 }
+#editInput{
+  background-color: #22272B;
+  color: white;
+}
 
 .list-container__right{
   flex:1;
