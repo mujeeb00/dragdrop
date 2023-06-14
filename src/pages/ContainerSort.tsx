@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import './App.css'
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { RiEdit2Fill } from 'react-icons/ri';
+import { RiDeleteBin2Fill } from 'react-icons/ri';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
+
+
+
 
 type TodoType = {
   id: string;
@@ -83,34 +91,16 @@ function ContainerSort() {
 
   return (
     <div className="container-sort">
-      
-
       <div className="container-sort__wrapper">
         {columnMap.map((column) => (
           <div className="container-sort__column" key={column}>
-            <h5>{columns[column]}</h5>
-            <button
-              className="add-button"
-              onClick={() => {
-                const newTitle = prompt("Enter a title:");
-                if (newTitle) {
-                  const todoPayload: TodoType = {
-                    id: uuidv4(),
-                    title: newTitle,
-                    column: column,
-                    sortIndex: todos.length + 1,
-                  };
-                  setTodos([...todos, todoPayload]);
-                }
-              }}
-            >
-              Add a todo
-            </button>
             <div
               className="container-sort__items"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => handleColumnDrop(column)}
             >
+
+              <h5 className="Titletext">{columns[column]}</h5>
               {todos
                 .filter((todo) => todo.column === column)
                 .map((todo) => (
@@ -125,23 +115,55 @@ function ContainerSort() {
                       <input
                         type="text"
                         value={todo.title}
-                        onChange={(e) => handleEditTodo(todo.id, e.target.value)}
+                        onChange={(e) =>
+                          handleEditTodo(todo.id, e.target.value)
+                        }
                       />
                     ) : (
-                      <h3>{todo.title}</h3>
+                      
+                      <p className="text-center ms-5 pt-2">{todo.title}</p>
+                      
+                    
                     )}
-                    <div className="action-buttons">
-                      <button onClick={() => setEditTodoId(todo.id)}>
-                        {editTodoId === todo.id ? "Save" : "Edit"}
-                      </button>
-                      <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                    <div className="action-buttons ms-5 ps-5 d-flex" id="parentIcons">
+                      <p className="edit"  onClick={() => setEditTodoId(todo.id)}>
+                        {editTodoId === todo.id ? "Save" : <RiEdit2Fill />}
+                      </p>
+                     
+                      <p className="delete" onClick={() => handleDeleteTodo(todo.id)}>
+                      
+                      <RiDeleteBin2Fill />
+                      </p>
+                      
                     </div>
+
+                    
                   </div>
+                  
                 ))}
+                <Button
+            variant="outline-dark " size="sm"
+              className="add-button text-secondary " id="btntest"
+              onClick={() => {
+                const newTitle = prompt("Enter a title:");
+                if (newTitle) {
+                  const todoPayload: TodoType = {
+                    id: uuidv4(),
+                    title: newTitle,
+                    column: column,
+                    sortIndex: todos.length + 1,
+                  };
+                  setTodos([...todos, todoPayload]);
+                }
+              }}
+            >
+             + Add Task
+            </Button>
             </div>
           </div>
         ))}
       </div>
+     
     </div>
   );
 }
