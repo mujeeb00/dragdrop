@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RiEdit2Fill } from 'react-icons/ri';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import Form from 'react-bootstrap/Form';
-import {SlOptionsVertical} from 'react-icons/sl'
+
 import AnimationData from '../Asset/70032-task-on-clipboard-2 (1).json'
 import Lottie from "lottie-react";
 
