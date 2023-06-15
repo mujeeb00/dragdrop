@@ -5,7 +5,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RiEdit2Fill } from 'react-icons/ri';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import Form from 'react-bootstrap/Form';
+import {SlOptionsVertical} from 'react-icons/sl'
+import AnimationData from '../Asset/70032-task-on-clipboard-2 (1).json'
+import Lottie from "lottie-react";
+
+
+
+
 
 
 
@@ -61,6 +70,9 @@ function ContainerSort() {
     };
     setTodos([...todos, todoPayload]);
     setTodoTitle(""); // Clear the input field after adding a todo
+
+ 
+   
   };
 
   const handleColumnDrop = (column: ColumnType) => {
@@ -70,15 +82,14 @@ function ContainerSort() {
     setTodos(tempTodos);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodoTitle(e.target.value);
-  };
+  
 
   const handleDeleteTodo = (todoId: string) => {
     const updatedTodos = todos.filter((todo) => todo.id !== todoId);
     setTodos(updatedTodos);
   };
-
+      
+ 
   const handleEditTodo = (todoId: string, newTitle: string) => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === todoId) {
@@ -90,9 +101,25 @@ function ContainerSort() {
     setEditTodoId("");
   };
 
+  
+
+  
+
+
+
   return (
+
+    <><div className="container-fluide">
+    <Lottie className="animatedImage" animationData={AnimationData as any} />
+    </div>
+    
+    
+    
+    
     <div className="container-sort">
-      <div className="container-sort__wrapper">
+       
+      <div className="container-sort__wrapper me-5">
+      
         {columnMap.map((column) => (
           <div className="container-sort__column" key={column}>
             <div
@@ -129,6 +156,8 @@ function ContainerSort() {
                       <p className="edit"  onClick={() => setEditTodoId(todo.id)}>
                         {editTodoId === todo.id ? "Save" : <RiEdit2Fill />}
                       </p>
+
+                      
                      
                       <p className="delete" onClick={() => handleDeleteTodo(todo.id)}>
                       
@@ -141,11 +170,16 @@ function ContainerSort() {
                   </div>
                   
                 ))}
-                <Button
+
+              
+                <div>
+                
+            <Button
             variant="outline-dark " size="sm"
               className="add-button text-secondary " id="btntest"
               onClick={() => {
-                const newTitle = prompt("Enter a title:");
+               
+                const newTitle = prompt("helo");
                 if (newTitle) {
                   const todoPayload: TodoType = {
                     id: uuidv4(),
@@ -159,13 +193,24 @@ function ContainerSort() {
             >
              + Add Task
             </Button>
+           
+            </div>
             </div>
           </div>
         ))}
       </div>
+
+
+   
+
+
+
      
     </div>
+    </>
+  
   );
 }
+
 
 export default ContainerSort;
