@@ -4,9 +4,6 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RiEdit2Fill } from 'react-icons/ri';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
 import Form from 'react-bootstrap/Form';
 import {SlOptionsVertical} from 'react-icons/sl'
 import AnimationData from '../Asset/70032-task-on-clipboard-2 (1).json'
