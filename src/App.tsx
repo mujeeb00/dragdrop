@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { Link } from "react-router-dom";
 import MainRoutes from "./Routes";
-import Operations from "./Operations";
+
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         
       </div>
       <MainRoutes />
-      <Operations/>
+
     </div>
   );
 }

@@ -5,6 +5,7 @@ body{
   background-size: auto;
   color: white;
   font-family: 'Roboto', sans-serif;
+  overflow-x: visible;
 }
 .app{
   text-align: center;
