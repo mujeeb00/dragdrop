@@ -9,7 +9,6 @@ function App() {
     <div className="app">
       <div className="app__navigation">
         <Link to="/"></Link>
-        
       </div>
       <MainRoutes />
 
