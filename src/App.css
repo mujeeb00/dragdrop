@@ -55,7 +55,7 @@ body{
 }
 .list-container__left{
   flex:1;
-  padding:10px;
+  /* padding:10px; */
 }
 .Titletext{
   color: rgb(217, 213, 213);
@@ -67,7 +67,7 @@ body{
   background-color: #22272B;
   color: #8c98a3;
   margin-top:10px;
-  border-radius: 2rem;
+  border-radius: 1rem;
   cursor:move;
   min-height: 20px;
 
@@ -82,7 +82,7 @@ body{
 }
 .list-item i{
   margin-right:20px;
-  font-size: 10px;
+  font-size: 8px;
 }
 h3{
   font-size: 30px;
@@ -102,7 +102,8 @@ h3{
 }
 .container-sort__wrapper{
   display:flex;
-  justify-content: center;
+  margin-left: 10px;
+  
 
  
 }
@@ -138,6 +139,6 @@ h3{
   border: 8px solid rgb(27, 26, 26);
   min-height: 10px;
   border-radius: 1.5rem;
-  padding: 0 0.5rem 0;
+  
   
 }
