@@ -28,6 +28,8 @@ function ContainerSort() {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [editTodoId, setEditTodoId] = useState("");
   const [columns, setColumns] = useState<Column>(initialColumns);
+  const [editInputValue, setEditInputValue] = useState<string>(''); // Assuming the input value is of type string
+
   const draggedTodoItem = useRef<string | null>(null);
 
   const handleAddTodo = () => {
@@ -44,8 +46,12 @@ function ContainerSort() {
   };
 
   const handleColumnDrop = (column: ColumnType) => {
-    // Implementation for handling column drop
-    // ...
+    const index = todos.findIndex(
+      (todo) => todo.id === draggedTodoItem.current
+    );
+    const tempTodos = [...todos];
+    tempTodos[index].column = column;
+    setTodos(tempTodos);
   };
 
   const handleDeleteTodo = (todoId: string) => {
@@ -62,6 +68,12 @@ function ContainerSort() {
     });
     setTodos(updatedTodos);
   };
+
+  const handleEditInputChange = (value: string) => {
+    setEditInputValue(value);
+  };
+  
+  
 
   useEffect(() => {
     const storedTodos = dataRef.ref("user task"); // Retrieve todos from Firebase
@@ -117,86 +129,118 @@ function ContainerSort() {
 
   return (
     <>
-      <div className="container main">
-        <Button
-          variant="outline-dark"
-          size="sm"
-          className="add-column-button"
-          onClick={handleCreateColumn}
-        >
-          Create Card
-        </Button>
-        <div className="container-sort">
-          <div className="container-sort__wrapper me-5">
+      <div className="container row">
+        <div className="col-12">
+          <Button
+            variant="outline-dark"
+            size="sm"
+            className="add-column-button"
+            onClick={handleCreateColumn}
+          >
+            Create Card
+          </Button>
+        </div>
+      </div>
+
+      <div className="container-sort">
+        <div className="container-sort__wrapper d-fl">
+          <div className="">
             {Object.entries(columns).map(([columnKey, columnName]) => (
-              <div className="container-sort__column" key={columnKey}>
-                <Button
-                  variant="light"
-                  size="sm"
-                  className="delete-column"
-                  onClick={() => handleDeleteColumn(columnKey as ColumnType)}
-                >
-                  <RiDeleteBin2Fill />
-                </Button>
-                <div
-                  className="container-sort__items"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={(e) => handleColumnDrop(columnKey as ColumnType)}
-                >
-                  <h5 className="Titletext">{columnName}</h5>
-                  {todos
-                    .filter((todo) => todo.column === columnKey)
-                    .map((todo) => (
-                      <div
-                        key={todo.id}
-                        className="list-item"
-                        draggable
-                        onDragStart={(e) => (draggedTodoItem.current = todo.id)}
-                        onDragOver={(e) => e.preventDefault()}
-                      >
-                        {editTodoId === todo.id ? (
-                          <Form.Control
-                            id="editInput"
-                            type="text"
-                            placeholder="Small text"
-                            value={todo.title}
-                            onChange={(e) => handleEditTodo(todo.id, e.target.value)}
-                          />
-                        ) : (
-                          <p className="text-center ms-5 pt-2">{todo.title}</p>
-                        )}
-                        <div className="action-buttons ms-5 ps-5 d-flex" id="parentIcons">
-                          <p className="edit" onClick={() => setEditTodoId(todo.id)}>
-                            {editTodoId === todo.id ? "Save" : <RiEdit2Fill />}
-                          </p>
-                          <p className="delete" onClick={() => handleDeleteTodo(todo.id)}>
-                            <RiDeleteBin2Fill />
-                          </p>
+              <div className="d-inline-block">
+                <div className="container-sort__column " key={columnKey}>
+                  <Button
+                    variant="light"
+                    size="sm"
+                    className="delete-column"
+                    onClick={() => handleDeleteColumn(columnKey as ColumnType)}
+                  >
+                    <RiDeleteBin2Fill />
+                  </Button>
+                  <div
+                    className="container-sort__items"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => handleColumnDrop(columnKey as ColumnType)}
+                  >
+                    <h5 className="Titletext">{columnName}</h5>
+                    {todos
+                      .filter((todo) => todo.column === columnKey)
+                      .map((todo) => (
+                        <div
+                          key={todo.id}
+                          className="list-item"
+                          draggable
+                          onDragStart={(e) =>
+                            (draggedTodoItem.current = todo.id)
+                          }
+                          onDragOver={(e) => e.preventDefault()}
+                        >
+                          {editTodoId === todo.id ? (
+                            <Form.Control
+                              id="editInput"
+                              type="text"
+                              placeholder="Small text"
+                              value={editInputValue} // Use editInputValue instead of todo.title
+                              onChange={(e) =>
+                                setEditInputValue(e.target.value)
+                              } // Update the editInputValue state
+                              onKeyUp={(e) => {
+                                if (e.key === "Enter") {
+                                  handleEditTodo(todo.id, editInputValue); // Call the update function on "Enter" key press
+                                  setEditTodoId(""); // Clear editTodoId to exit the edit mode
+                                }
+                              }}
+                            />
+                          ) : (
+                            <p className="text-center p-1">
+                              {todo.title}
+                              <div
+                                className="action-buttons justify-content-end d-flex"
+                                id="parentIcons"
+                              >
+                                <p
+                                  className="edit"
+                                  onClick={() => setEditTodoId(todo.id)}
+                                >
+                                  {editTodoId === todo.id ? (
+                                    "Save"
+                                  ) : (
+                                    <RiEdit2Fill />
+                                  )}
+                                </p>
+                                <p
+                                  className="delete"
+                                  onClick={() => handleDeleteTodo(todo.id)}
+                                >
+                                  <RiDeleteBin2Fill />
+                                </p>
+                              </div>
+                            </p>
+                          )}
                         </div>
-                      </div>
-                    ))}
-                  <div>
-                    <Button
-                      variant="outline-dark"
-                      size="sm"
-                      className="add-button text-secondary"
-                      id="btntest"
-                      onClick={() => {
-                        const newTitle = prompt("Input your task");
-                        if (newTitle) {
-                          const todoPayload: TodoType = {
-                            id: uuidv4(),
-                            title: newTitle,
-                            column: columnKey as ColumnType,
-                            sortIndex: todos.length + 1,
-                          };
-                          setTodos([...todos, todoPayload]);
-                          dataRef.ref("user task").push(todoPayload); // Save the task to Firebase
-                        }
-                      }}
-                    >
-                      + Add Task
-                    </Button>
+                      ))}
+                    <div>
+                      <Button
+                        variant="outline-dark"
+                        size="sm"
+                        className="add-button text-secondary"
+                        id="btntest"
+                        onClick={() => {
+                          const newTitle = prompt("Input your task");
+                          if (newTitle) {
+                            const todoPayload: TodoType = {
+                              id: uuidv4(),
+                              title: newTitle,
+                              column: columnKey as ColumnType,
+                              sortIndex: todos.length + 1,
+                            };
+                            setTodos([...todos, todoPayload]);
+                            dataRef.ref("user task").push(todoPayload); // Save the task to Firebase
+                          }
+                        }}
+                      >
+                        + Add Task
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
