@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { RiEdit2Fill, RiDeleteBin2Fill } from "react-icons/ri";
 import Form from "react-bootstrap/Form";
 import { dataRef } from "../Firebases";
+import WebSocket from "websocket";
+
 
 type TodoType = {
   id: string;
@@ -62,16 +64,20 @@ function ContainerSort() {
   const handleEditTodo = (todoId: string, newTitle: string) => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === todoId) {
-        return { ...todo, title: newTitle };
+        const updatedTodo = { ...todo, title: newTitle };
+        dataRef.ref(`user task/${todoId}`).set(updatedTodo); // Update the corresponding todo item in Firebase
+        return updatedTodo;
       }
       return todo;
     });
     setTodos(updatedTodos);
   };
+  
 
   const handleEditInputChange = (value: string) => {
     setEditInputValue(value);
   };
+  
   
   
 
@@ -126,6 +132,28 @@ function ContainerSort() {
     setTodos(updatedTodos);
     dataRef.ref("user columns").set(updatedColumns); // Save the updated columns to Firebase
   };
+
+  useEffect(() => {
+    // Set up individual todo item listeners
+    todos.forEach((todo) => {
+      const todoRef = dataRef.ref(`user task/${todo.id}`);
+      todoRef.on("value", (snapshot) => {
+        const updatedTodo = snapshot.val();
+        if (updatedTodo) {
+          const updatedTodos = todos.map((item) =>
+            item.id === todo.id ? updatedTodo : item
+          );
+          setTodos(updatedTodos);
+        }
+      });
+
+      return () => {
+        todoRef.off("value");
+      };
+    });
+  }, [todos]);
+
+  
 
   return (
     <>
