@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { RiEdit2Fill, RiDeleteBin2Fill } from "react-icons/ri";
 import Form from "react-bootstrap/Form";
 import { dataRef } from "../Firebases";
-import WebSocket from "websocket";
+
 
 
 type TodoType = {
@@ -59,6 +59,7 @@ function ContainerSort() {
   const handleDeleteTodo = (todoId: string) => {
     const updatedTodos = todos.filter((todo) => todo.id !== todoId);
     setTodos(updatedTodos);
+  
   };
 
   const handleEditTodo = (todoId: string, newTitle: string) => {
@@ -72,7 +73,8 @@ function ContainerSort() {
     });
     setTodos(updatedTodos);
   };
-  
+
+ 
 
   const handleEditInputChange = (value: string) => {
     setEditInputValue(value);
@@ -158,6 +160,8 @@ function ContainerSort() {
   return (
     <>
       <div className="container row">
+
+        {/* Create card Button */}
         <div className="col-12">
           <Button
             variant="outline-dark"
